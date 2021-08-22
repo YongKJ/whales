@@ -1,0 +1,12 @@
+server:
+  port: 10000
+
+spring:
+  cloud:
+    alicloud:
+      sms:
+        host: https://gyytz.market.alicloudapi.com
+        path: /sms/smsSend
+        skin: 908e94ccf08b4476ba6c876d13f084ad
+        sign: 2e65b1bb3d054466b82f0c9d125465e2
+        appcode: a5c1d22a7b8e4cb59bb2574a745464da
