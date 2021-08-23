@@ -16,7 +16,8 @@ public enum ResponseStatusEnum {
     NO_AUTH(503,false,"您的权限不足，无法继续操作！"),
     MOBILE_ERROR(504,false,"短信发送失败，请稍后重试！"),
     SMS_NEED_WAIT_ERROR(505,false,"短信发送太快啦~请稍后再试！"),
-    SMS_CODE_ERROR(506,false,"验证码过期或不匹配，请稍后再试！"),
+    SMS_CODE_TIME_ERROR(506,false,"验证码过期，请稍后再试！"),
+    SMS_CODE_EQUALS_ERROR(506,false,"验证码错误，请重新输入！"),
     USER_FROZEN(507,false,"用户已被冻结，请联系管理员！"),
     USER_UPDATE_ERROR(508,false,"用户信息更新失败，请联系管理员！"),
     USER_INACTIVE_ERROR(509,false,"请前往[账号设置]修改信息激活后再进行后续操作！"),
@@ -27,6 +28,8 @@ public enum ResponseStatusEnum {
     FILE_NOT_EXIST_ERROR(514,false,"你所查看的文件不存在！"),
     USER_STATUS_ERROR(515,false,"用户状态参数出错！"),
     USER_NOT_EXIST_ERROR(516,false,"用户不存在！"),
+    PHONE_EXIST_EXCEPTION(517,false,"该手机已被注册"),
+    USER_EXIST_EXCEPTION(518,false,"用户名已被注册"),
 
     // 自定义系统级别异常 54x
     SYSTEM_INDEX_OUT_OF_BOUNDS(541, false, "系统错误，数组越界！"),

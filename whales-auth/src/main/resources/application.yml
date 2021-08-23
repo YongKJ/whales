@@ -10,3 +10,7 @@ spring:
         skin: 908e94ccf08b4476ba6c876d13f084ad
         sign: 2e65b1bb3d054466b82f0c9d125465e2
         appcode: a5c1d22a7b8e4cb59bb2574a745464da
+  redis:
+    host: 47.106.102.217
+    port: 2069
+    password: uetr9ce7d3jg8wm0qp76hsm2h43jn4v2xdsd

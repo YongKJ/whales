@@ -15,9 +15,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>whales-auth</module>
         <module>whales-common</module>
+        <module>whales-auth</module>
         <module>whales-user</module>
+        <module>whales-gateway</module>
+        <module>whales-community</module>
     </modules>
 
 </project>

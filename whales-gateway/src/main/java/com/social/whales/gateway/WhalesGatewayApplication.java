@@ -1,18 +1,16 @@
-package com.social.whales.auth;
+package com.social.whales.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableDiscoveryClient
-@EnableFeignClients
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-public class WhalesAuthApplication {
+public class WhalesGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WhalesAuthApplication.class, args);
+        SpringApplication.run(WhalesGatewayApplication.class, args);
     }
 
 }
