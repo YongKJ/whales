@@ -24,7 +24,7 @@
             <artifactId>whales-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--duanxin-->
+        <!--短信-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
