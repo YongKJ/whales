@@ -2,17 +2,12 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: auth_route
+        - id: auth_host_route
           uri: lb://whales-auth
           predicates:
-            - Host=auth.whales.com
+            - Host=auth.whalesocial.com
 
-        - id: user_route
+        - id: user_host_route
           uri: lb://whales-user
           predicates:
-            - Host=user.whales.com
-
-        - id: baidu_route
-          uri: https://www.baidu.com
-          predicates:
-            - Host=**.baidu.com
+            - Host=user.whalesocial.com

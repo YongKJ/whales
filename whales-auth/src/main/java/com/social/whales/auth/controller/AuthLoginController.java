@@ -9,18 +9,12 @@ import com.social.whales.auth.feign.UserFeignService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -60,7 +54,6 @@ public class AuthLoginController {
         return GraceJSONResult.ok();
     }
 
-
     @PostMapping("/authRegister")
     public GraceJSONResult authRegister(@RequestBody UserVo userVo) {
         //验证码
@@ -79,6 +72,11 @@ public class AuthLoginController {
         } else {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.SMS_CODE_TIME_ERROR);
         }
+    }
+
+    @GetMapping("/hello")
+    public String Hello(){
+        return "hello";
     }
 
 }
