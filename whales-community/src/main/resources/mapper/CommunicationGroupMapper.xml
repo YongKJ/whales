@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.social.mybatis.generator.database.communicationGroup.mapper.CommunicationGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.social.whales.community.entity.CommunicationGroupEntity" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="group_id" property="groupId" jdbcType="VARCHAR" />
+    <result column="group_portrait" property="groupPortrait" jdbcType="VARCHAR" />
+    <result column="group_nickname" property="groupNickname" jdbcType="VARCHAR" />
+    <result column="group_notice" property="groupNotice" jdbcType="VARCHAR" />
+    <result column="group_type_label" property="groupTypeLabel" jdbcType="VARCHAR" />
+    <result column="group_custom_tag" property="groupCustomTag" jdbcType="VARCHAR" />
+    <result column="group_manager_id" property="groupManagerId" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserGenerator {
+public class CommunicationGroupGenerator {
     public void generator() throws Exception {
 
         List<String> warnings = new ArrayList<String>();
@@ -17,7 +17,7 @@ public class UserGenerator {
         //指定 逆向工程配置文件
         File configFile = new File("mybatis-generator-database"
                 + File.separator
-                + "generatorConfig-user.xml");
+                + "generatorConfig-community.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(configFile);
         DefaultShellCallback callback = new DefaultShellCallback(overwrite);
@@ -29,7 +29,7 @@ public class UserGenerator {
 
     public static void main(String[] args) throws Exception {
         try {
-            UserGenerator generatorSqlmap = new UserGenerator();
+            CommunicationGroupGenerator generatorSqlmap = new CommunicationGroupGenerator();
             generatorSqlmap.generator();
         } catch (Exception e) {
             e.printStackTrace();

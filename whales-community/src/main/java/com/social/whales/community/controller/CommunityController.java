@@ -1,30 +1,31 @@
 package com.social.whales.community.controller;
 
-import com.social.whales.community.service.CommunitySocketServerService;
-import org.apache.commons.lang3.StringUtils;
+import com.social.whales.community.entity.ChatLogTagEntity;
+import com.social.whales.community.service.CommunitySendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/community")
 public class CommunityController {
     @Autowired
-    private CommunitySocketServerService socketServerService;
+    private CommunitySendMessageService sendMessageService;
 
-    @GetMapping("/Socket")
-    public String communitySocketIndex(){
-        return "";
+    @GetMapping("/")
+    public String communitySocketIndex() {
+        return "helloTestIndex.html";
     }
 
-    //服务端接收group/chat/13242366884 发送给
+/*    //收发送信息
     @MessageMapping("/chat/{groupId}")
-    public void communitySocketServer(@PathVariable("groupId")String groupId){
-        if (!StringUtils.isEmpty(groupId)){
-            socketServerService.sendGroupAndDataProcess(groupId);
+    public void sendMessage(@DestinationVariable("groupId")String groupId,@RequestBody ChatLogTagEntity chatLogTagEntity) {
+        try {
+            sendMessageService.sendMessageToGroup(groupId,chatLogTagEntity);
+        }catch (Exception e){
+
         }
-    }
+    }*/
 }
