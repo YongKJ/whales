@@ -19,7 +19,7 @@ public class CommunityController {
         return "helloTestIndex.html";
     }
 
-/*    //收发送信息
+    //收发送信息：在前端发送按钮绑定“群号”，然后每次发送回自动传输到对应的群中
     @MessageMapping("/chat/{groupId}")
     public void sendMessage(@DestinationVariable("groupId")String groupId,@RequestBody ChatLogTagEntity chatLogTagEntity) {
         try {
@@ -27,5 +27,5 @@ public class CommunityController {
         }catch (Exception e){
 
         }
-    }*/
+    }
 }
