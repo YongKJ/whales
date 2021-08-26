@@ -28,7 +28,6 @@ public class CommunityTestController {
     @MessageMapping("/chat/{groupId}")
     //@SendTo("/member/13242366884")
     public void communitySocketServer(@DestinationVariable String groupId,Client2ServerMessage message){
-        System.out.println("This is groupId:"+groupId);
         if (!StringUtils.isEmpty(groupId)){
             socketServerService.sendMessageToGroupTest(groupId,message);
         }
