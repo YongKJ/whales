@@ -28,7 +28,7 @@ public class ChatLogTagEntity {
      * 信息标记序列号（群里每有人发一个消息就+1）
      */
     @Column(name = "information_sign")
-    private Integer informationSign;
+    private String informationSign;
 
     /**
      * 聊天记录
@@ -95,7 +95,7 @@ public class ChatLogTagEntity {
      *
      * @return information_sign - 信息标记序列号（群里每有人发一个消息就+1）
      */
-    public Integer getInformationSign() {
+    public String getInformationSign() {
         return informationSign;
     }
 
@@ -104,7 +104,7 @@ public class ChatLogTagEntity {
      *
      * @param informationSign 信息标记序列号（群里每有人发一个消息就+1）
      */
-    public void setInformationSign(Integer informationSign) {
+    public void setInformationSign(String informationSign) {
         this.informationSign = informationSign;
     }
 

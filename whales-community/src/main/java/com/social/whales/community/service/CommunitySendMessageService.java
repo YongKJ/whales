@@ -8,4 +8,6 @@ public interface CommunitySendMessageService {
     void sendMessageToGroup(String groupId,ChatLogTagEntity chatLogTagEntity);
 
     void sendMessageToGroupTest(String groupId, Client2ServerMessage message);
+
+    void statusUser(String groupId, String userId);
 }

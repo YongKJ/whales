@@ -1,10 +1,9 @@
 package com.social.whales.community.mapper;
 
-
 import com.social.my.mapper.MyMapper;
-import com.social.whales.community.entity.ChatLogTagEntity;
+import com.social.whales.community.entity.GroupMembersEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface ChatLogTagMapper extends MyMapper<ChatLogTagEntity> {
+public interface GroupMembersMapper extends MyMapper<GroupMembersEntity> {
 }
