@@ -31,7 +31,6 @@
     }
 
     function connect() {
-        //var url = 'http://localhost:11000/whaleSocial';
         // 连接 SockJs 的 endpoint 名称为 "/whaleSocial"
         var socket = new SockJS('/whaleSocial');
         // 使用 STOMP 子协议的 WebSocket 客户端
@@ -43,7 +42,6 @@
             stompClient.subscribe('/member/13242366884', function(respnose){
                 console.log("This is:"+respnose.body)
                 // 展示返回的信息，只要订阅了 /member/13242366884 目标，都可以接收到服务端返回的信息
-
                 showResponse(respnose.body);
             });
         });
