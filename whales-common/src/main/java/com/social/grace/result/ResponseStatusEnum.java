@@ -66,13 +66,16 @@ public enum ResponseStatusEnum {
     ARTICLE_ALREADY_READ_ERROR(586, false, "文章重复阅读！"),
 
     // 人脸识别错误代码
-    FACE_VERIFY_TYPE_ERROR(600, false, "人脸比对验证类型不正确！"),
-    FACE_VERIFY_LOGIN_ERROR(601, false, "人脸登录失败！"),
+    ENTER_GROUP_SUCCESS(600, true, "进入群成功"),
+    ENTER_GROUP_ERROR(601, false, "进入群失败"),
 
     // 系统错误，未预期的错误 555
     SYSTEM_ERROR(555, false, "系统繁忙，请稍后再试！"),
     SYSTEM_OPERATION_ERROR(556, false, "操作失败，请重试或联系管理员"),
-    SYSTEM_RESPONSE_NO_INFO(557, false, "");
+    SYSTEM_RESPONSE_NO_INFO(557, false, ""),
+
+    MESSAGE_SEND_SUCCESS(700,true,"消息发送成功"),
+    MESSAGE_SEND_ERROR(701,false,"消息发送失败");
 
 
     // 响应业务状态
