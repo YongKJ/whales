@@ -5,7 +5,7 @@ import com.social.whales.community.entity.Client2ServerMessage;
 
 public interface CommunitySendMessageService {
 
-    void sendMessageToGroup(String groupId,ChatLogTagEntity chatLogTagEntity);
+    void sendMessageToGroup(String groupId,String message);
 
     void sendMessageToGroupTest(String groupId, Client2ServerMessage message);
 

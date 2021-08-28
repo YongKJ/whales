@@ -8,9 +8,10 @@ import com.social.whales.community.service.CommunitySendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 /*@RequestMapping("/")*/
 public class CommunityController {
     @Autowired
@@ -33,10 +34,10 @@ public class CommunityController {
     }
 
     //收发送信息：在前端发送按钮绑定“群号”，然后每次发送回自动传输到对应的群中
-    @SubscribeMapping("/chat/{groupId}")
-    public GraceJSONResult sendMessage(@DestinationVariable("groupId")String groupId,@RequestBody ChatLogTagEntity chatLogTagEntity) {
+    @SubscribeMapping("/chat/{groupId}/{message}")
+    public GraceJSONResult sendMessage(@DestinationVariable("groupId")String groupId,@DestinationVariable("message")String message) {
         try {
-            sendMessageService.sendMessageToGroup(groupId,chatLogTagEntity);
+            sendMessageService.sendMessageToGroup(groupId,message);
             return GraceJSONResult.ok();
         }catch (MessagesException e){
             return GraceJSONResult.errorCustom(ResponseStatusEnum.MESSAGE_SEND_ERROR);

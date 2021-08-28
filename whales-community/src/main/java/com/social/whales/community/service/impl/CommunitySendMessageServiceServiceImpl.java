@@ -35,15 +35,12 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
 
     @Autowired
     private StringRedisTemplate redisTemplate;
-
-    @Resource
-    private ChatLogTagMapper chatLogTagMapper;
-
+    
     @Resource
     private GroupMembersMapper groupMembersMapper;
 
     @Override
-    public void sendMessageToGroup(String groupId, ChatLogTagEntity chatLogTagEntity) {
+    public void sendMessageToGroup(String groupId,String message) {
         //获取所有群成员信息
         //TODO 从redis中查询
         Set<String> members = redisTemplate.opsForSet().members(GROUP_MEMBER + ":" + groupId);
@@ -61,7 +58,7 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
                 //如果当前的成员不在群众
                 if (!userInGroup.equals(groupId)) {
                     //放入消息序列号
-                    redisTemplate.opsForList().leftPush(REDIS_MESSAGE_USER + ":" + userId + ":" + groupId, chatLogTagEntity.getInformationSign());
+                    redisTemplate.opsForList().leftPush(REDIS_MESSAGE_USER + ":" + userId + ":" + groupId,message);
                 }
             });
         } else {
@@ -73,7 +70,7 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
                 redisTemplate.opsForSet().add(GROUP_MEMBER + ":" + groupId,JSONObject.toJSONString(entity));
             });
         }
-        simpMessagingTemplate.convertAndSend("/member/" + groupId, chatLogTagEntity.getUserInformation());
+        simpMessagingTemplate.convertAndSend("/member/" + groupId, message);
     }
 
     @Override
