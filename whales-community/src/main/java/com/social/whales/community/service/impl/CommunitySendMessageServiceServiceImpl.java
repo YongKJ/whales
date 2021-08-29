@@ -29,6 +29,7 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
 
     private final static String REDIS_MESSAGE_USER = "redis_message_user";
     private final static String GROUP_MEMBER = "redis_group_member";
+    private final static String GROUP_MESSAGES = "redis_messages";
 
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -41,6 +42,10 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
 
     @Override
     public void sendMessageToGroup(String groupId, ChatLogTagEntity chatLogTagEntity) {
+        //让消息先发送出去，再做下面的事
+        simpMessagingTemplate.convertAndSend("/member/" + groupId, chatLogTagEntity.getUserInformation());
+        //将消息存储如redis缓存中
+        redisTemplate.opsForList().leftPush(GROUP_MESSAGES+":"+groupId,JSONObject.toJSONString(chatLogTagEntity));
         //获取所有群成员信息
         //TODO 从redis中查询
         List<String> members = redisTemplate.opsForList().range(GROUP_MEMBER + ":" + groupId, 0, -1);
@@ -73,7 +78,6 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
                 redisTemplate.opsForList().leftPush(GROUP_MEMBER + ":" + groupId, JSONObject.toJSONString(entity));
             });
         }
-        simpMessagingTemplate.convertAndSend("/member/" + groupId, chatLogTagEntity.getUserInformation());
     }
 
     @Override
@@ -88,6 +92,5 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
         //System.out.println("redisKey:"+redisKey);
         //插入值
         redisTemplate.opsForValue().set(redisKey, groupId);
-
     }
 }

@@ -3,13 +3,11 @@ package com.social.whales.community.controller;
 import com.social.grace.result.GraceJSONResult;
 import com.social.grace.result.ResponseStatusEnum;
 import com.social.whales.community.entity.ChatLogTagEntity;
-import com.social.whales.community.entity.GroupMembersEntity;
 import com.social.whales.community.exception.MessagesException;
 import com.social.whales.community.service.CommunitySendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
