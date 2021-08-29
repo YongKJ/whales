@@ -35,15 +35,15 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
 
     @Autowired
     private StringRedisTemplate redisTemplate;
-    
+
     @Resource
     private GroupMembersMapper groupMembersMapper;
 
     @Override
-    public void sendMessageToGroup(String groupId,String message) {
+    public void sendMessageToGroup(String groupId, ChatLogTagEntity chatLogTagEntity) {
         //获取所有群成员信息
         //TODO 从redis中查询
-        Set<String> members = redisTemplate.opsForSet().members(GROUP_MEMBER + ":" + groupId);
+        List<String> members = redisTemplate.opsForList().range(GROUP_MEMBER + ":" + groupId, 0, -1);
         if (members != null && members.size() != 0) {
             List<GroupMembersEntity> entityList = members.stream().map(member -> {
                 GroupMembersEntity entity = JSONObject.parseObject(member, GroupMembersEntity.class);
@@ -58,7 +58,10 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
                 //如果当前的成员不在群众
                 if (!userInGroup.equals(groupId)) {
                     //放入消息序列号
-                    redisTemplate.opsForList().leftPush(REDIS_MESSAGE_USER + ":" + userId + ":" + groupId,message);
+                    Boolean hasKey = redisTemplate.hasKey(REDIS_MESSAGE_USER + ":" + userId + ":" + groupId);
+                    if (!hasKey) {
+                        redisTemplate.opsForList().leftPush(REDIS_MESSAGE_USER + ":" + userId + ":" + groupId, chatLogTagEntity.getInformationSign());
+                    }
                 }
             });
         } else {
@@ -66,11 +69,11 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
             Example.Criteria criteria = userExample.createCriteria();
             criteria.andEqualTo("communicationGroupId", groupId);
             List<GroupMembersEntity> entityList = groupMembersMapper.selectByExample(userExample);
-            entityList.stream().forEach(entity->{
-                redisTemplate.opsForSet().add(GROUP_MEMBER + ":" + groupId,JSONObject.toJSONString(entity));
+            entityList.stream().forEach(entity -> {
+                redisTemplate.opsForList().leftPush(GROUP_MEMBER + ":" + groupId, JSONObject.toJSONString(entity));
             });
         }
-        simpMessagingTemplate.convertAndSend("/member/" + groupId, message);
+        simpMessagingTemplate.convertAndSend("/member/" + groupId, chatLogTagEntity.getUserInformation());
     }
 
     @Override
@@ -82,7 +85,9 @@ public class CommunitySendMessageServiceServiceImpl implements CommunitySendMess
     public void statusUser(String groupId, String userId) {
         //健格式[健+用户名]:redis_message_user:xxxxxx
         String redisKey = REDIS_MESSAGE_USER + ":" + userId;
+        //System.out.println("redisKey:"+redisKey);
         //插入值
         redisTemplate.opsForValue().set(redisKey, groupId);
+
     }
 }

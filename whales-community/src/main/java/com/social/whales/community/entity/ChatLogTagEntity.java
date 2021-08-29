@@ -25,7 +25,7 @@ public class ChatLogTagEntity {
     private Date userInformationTime;
 
     /**
-     * 信息标记序列号（群里每有人发一个消息就+1）
+     * 信息标记序列号（群里每有人发一个消息就）
      */
     @Column(name = "information_sign")
     private String informationSign;

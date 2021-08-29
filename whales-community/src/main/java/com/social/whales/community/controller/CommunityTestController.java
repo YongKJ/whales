@@ -25,8 +25,8 @@ public class CommunityTestController {
     }
 
     //服务端接收group/chat/13242366884 发送给 /member/13242366884
-    @MessageMapping("/chat/{groupId}")
-    @SendTo("/member/13242366884")
+/*    @MessageMapping("/chat/{groupId}")
+    @SendTo("/member/13242366884")*/
     public void communitySocketServer(@DestinationVariable String groupId,Client2ServerMessage message){
         if (!StringUtils.isEmpty(groupId)){
             socketServerService.sendMessageToGroupTest(groupId,message);
