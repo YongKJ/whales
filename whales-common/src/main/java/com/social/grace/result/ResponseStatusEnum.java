@@ -30,6 +30,9 @@ public enum ResponseStatusEnum {
     USER_NOT_EXIST_ERROR(516,false,"用户不存在！"),
     PHONE_EXIST_EXCEPTION(517,false,"该手机已被注册"),
     USER_EXIST_EXCEPTION(518,false,"用户名已被注册"),
+    PHONE_NOTHAS_ERROR(519,false,"此手机号不存在"),
+    USER_PASSWORD_ERROR(520,false,"账号或密码输入错误"),
+    USER_LOGIN_ERROR(521,false,"登录系统失败，请联系管理员"),
 
     // 自定义系统级别异常 54x
     SYSTEM_INDEX_OUT_OF_BOUNDS(541, false, "系统错误，数组越界！"),

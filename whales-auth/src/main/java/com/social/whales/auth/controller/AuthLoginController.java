@@ -19,6 +19,10 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/auth")
 public class AuthLoginController {
+    private final static String LOGIN_IDANDPWD = "IdAndPwd";
+    private final static String LOGIN_PHOANDPWD = "PhoAndPwd";
+    private final static String LOGIN_PHOANDCODE = "PhoAndCode";
+
     @Autowired
     private UserFeignService userFeignService;
 
@@ -28,7 +32,7 @@ public class AuthLoginController {
     @Resource
     private SmsUtils smsUtils;
 
-    //发送短信并放入缓存
+    //发送短信验证码并放入缓存
     @PostMapping("/sendCode")
     public GraceJSONResult sendCode(@RequestParam("phone") String phone) {
         //进行处理验证码时效问题
@@ -54,6 +58,7 @@ public class AuthLoginController {
         return GraceJSONResult.ok();
     }
 
+    //进行注册
     @PostMapping("/authRegister")
     public GraceJSONResult authRegister(@RequestBody UserVo userVo) {
         //验证码
@@ -74,9 +79,27 @@ public class AuthLoginController {
         }
     }
 
-    @GetMapping("/hello")
-    public String Hello(){
-        return "hello";
+    //进行登录
+    @PostMapping("/authLogin/{loginWay}")
+    public GraceJSONResult authLogin(@PathVariable("loginWay") String loginWay, @RequestParam("phone") String phoneOrId, @RequestParam String passwordOrCode) {
+        //门户网账户密码登录:(IdAndPwd)
+        //门户网手机密码登录:(PhoAndPwd)
+        //门户网短信登陆:(PhoAndCode)
+        if (loginWay.equals(LOGIN_IDANDPWD)||loginWay.equals(LOGIN_PHOANDPWD)) {
+            GraceJSONResult result = userFeignService.loginUser(loginWay, phoneOrId, passwordOrCode);
+            return result;
+        } else if (loginWay.equals(LOGIN_PHOANDCODE)) {
+            String redisWord = redisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneOrId);
+            if (passwordOrCode.equals(redisWord.split("_")[0])) {
+                GraceJSONResult result = userFeignService.loginUser(loginWay, phoneOrId, passwordOrCode);
+                redisTemplate.delete(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneOrId);
+                return result;
+            }else {
+                return GraceJSONResult.errorCustom(ResponseStatusEnum.SMS_CODE_EQUALS_ERROR);
+            }
+        }else {
+            return GraceJSONResult.error();
+        }
     }
 
 }
