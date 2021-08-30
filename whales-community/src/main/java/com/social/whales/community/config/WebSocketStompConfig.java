@@ -19,8 +19,13 @@ public class WebSocketStompConfig implements WebSocketMessageBrokerConfigurer {
     // 这个方法的作用是定义消息代理，通俗一点讲就是设置消息连接请求的各种规范信息。
     public void configureMessageBroker(MessageBrokerRegistry registry){
         //服务端给客户端发消息的地址的前缀信息
+        //@SenTo/subscribe
         registry.enableSimpleBroker("/member");
         //客户端给服务端发消息的地址的前缀
+        //@SubscribeMapping/subscribe只接收此前缀的消息
+        //@MessageMapping/send
         registry.setApplicationDestinationPrefixes("/group");
+        //registry.enableSimpleBroker("/topic");               //设置服务器广播消息的基础路径
+        //egistry.setApplicationDestinationPrefixes("/app");
     }
 }

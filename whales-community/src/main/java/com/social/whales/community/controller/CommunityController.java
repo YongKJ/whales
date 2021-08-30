@@ -8,6 +8,7 @@ import com.social.whales.community.service.CommunitySendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,15 @@ public class CommunityController {
         return "helloTestIndex.html";
     }
 
+    /**
+     * @param groupId
+     * @param userId
+     * @return
+     * @SubscribeMapping("/topic/topic1") 标注的方法，只会处理SUBSCRIBE发送的消息。
+     * @MessageMapping("/topic/topic1") 标注的方法，只会处理SEND发送的消息。
+     */
     //群成员进入聊天室更改redis中记录
+    //@SubscribeMapping("/status/{groupId}/{userId}")
     @MessageMapping("/status/{groupId}/{userId}")
     public GraceJSONResult statusUser(@DestinationVariable("groupId")String groupId,@DestinationVariable("userId") String userId){
         //System.out.println("groupId:"+groupId+"---------userId:"+userId);
@@ -44,4 +53,8 @@ public class CommunityController {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.MESSAGE_SEND_ERROR);
         }
     }
+/*    @SubscribeMapping("/status/{userId}")
+    public void SubscribeTest2(@DestinationVariable("userId") String userId){
+        System.out.println("userId:"+userId);
+    }*/
 }
