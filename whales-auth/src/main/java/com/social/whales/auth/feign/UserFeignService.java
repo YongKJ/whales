@@ -13,5 +13,5 @@ public interface UserFeignService {
     GraceJSONResult registerUser(@RequestBody UserVo userVo);
 
     @PostMapping("/user/loginUser")
-    GraceJSONResult loginUser(String loginWay, @RequestParam("phone") String phoneOrId, @RequestParam(required = false) String passwordOrCode);
+    GraceJSONResult loginUser(@RequestParam("loginWay")String loginWay, @RequestParam("phone") String phoneOrId, @RequestParam(required = false) String passwordOrCode);
 }

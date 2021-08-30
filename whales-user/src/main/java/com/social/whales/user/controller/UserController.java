@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/loginUser")
-    public GraceJSONResult loginUser(String loginWay,@RequestParam("phone") String phoneOrId, @RequestParam(required = false) String passwordOrCode){
+    public GraceJSONResult loginUser(@RequestParam("loginWay") String loginWay,@RequestParam("phone") String phoneOrId, @RequestParam(required = false) String passwordOrCode){
         if (loginWay.equals(LOGIN_IDANDPWD)||loginWay.equals(LOGIN_PHOANDPWD)) {
             GraceJSONResult result = userService.selectPhoneOrId(phoneOrId,passwordOrCode);
             return result;

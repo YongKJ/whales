@@ -30,9 +30,9 @@ public class UserServiceImpl implements UserService {
         //checkUsernameUnique(vo.getUsername());
 
         UserEntity entity = new UserEntity();
-        BeanUtils.copyProperties(vo,entity);
+        BeanUtils.copyProperties(vo, entity);
 
-        String userId = setString(9,9);
+        String userId = setString(9, 9);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String encodePassword = bCryptPasswordEncoder.encode(vo.getPassword());
         entity.setId(userId);
@@ -45,24 +45,31 @@ public class UserServiceImpl implements UserService {
     public GraceJSONResult selectPhone(String phoneOrId) {
         Example adminExample = new Example(UserEntity.class);
         Example.Criteria criteria = adminExample.createCriteria();
-        criteria.andEqualTo("phoneNumber",phoneOrId);
+        criteria.andEqualTo("phoneNumber", phoneOrId);
         UserEntity userEntity = userMapper.selectOneByExample(adminExample);
-        if (userEntity!=null){
+        //TODO 如果没有手机则自动注册
+        if (userEntity != null) {
             return GraceJSONResult.ok(userEntity);
-        }else {
+        } else {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.PHONE_NOTHAS_ERROR);
         }
     }
 
     @Override
-    public GraceJSONResult selectPhoneOrId(String phoneOrId,String passwordOrCode) {
+    public GraceJSONResult selectPhoneOrId(String phoneOrId, String passwordOrCode) {
         Example adminExample = new Example(UserEntity.class);
         Example.Criteria criteria = adminExample.createCriteria();
-        criteria.andEqualTo("phoneNumber",phoneOrId).orEqualTo("id",phoneOrId);
+        criteria.andEqualTo("phoneNumber", phoneOrId).orEqualTo("id", phoneOrId);
         UserEntity userEntity = userMapper.selectOneByExample(adminExample);
-        if (userEntity!=null&&userEntity.getPassword().equals(passwordOrCode)){
-            return GraceJSONResult.ok(userEntity);
-        }else {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        if (userEntity != null) {
+            boolean matches = bCryptPasswordEncoder.matches(passwordOrCode, userEntity.getPassword());
+            if (matches) {
+                return GraceJSONResult.ok(userEntity);
+            } else {
+                return GraceJSONResult.errorCustom(ResponseStatusEnum.USER_PASSWORD_ERROR);
+            }
+        } else {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.USER_PASSWORD_ERROR);
         }
     }
@@ -71,10 +78,10 @@ public class UserServiceImpl implements UserService {
     private void checkUsernameUnique(String username) {
         Example adminExample = new Example(UserEntity.class);
         Example.Criteria criteria = adminExample.createCriteria();
-        criteria.andEqualTo("username",username);
+        criteria.andEqualTo("username", username);
 
         int count = userMapper.selectCountByExample(adminExample);
-        if (count>0){
+        if (count > 0) {
             throw new UsernameExistException();
         }
     }
@@ -83,16 +90,16 @@ public class UserServiceImpl implements UserService {
     private void checkPhoneUnique(String phoneNumber) {
         Example adminExample = new Example(UserEntity.class);
         Example.Criteria criteria = adminExample.createCriteria();
-        criteria.andEqualTo("phoneNumber",phoneNumber);
+        criteria.andEqualTo("phoneNumber", phoneNumber);
 
         int count = userMapper.selectCountByExample(adminExample);
-        if (count>0){
+        if (count > 0) {
             throw new PhoneExsitException();
         }
     }
 
     //设置账号
-    private String setString(int indexNum,int randomNum) {
+    private String setString(int indexNum, int randomNum) {
         Random random = new Random();
         //设置开头
         int Index = random.nextInt(indexNum);

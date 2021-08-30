@@ -11,8 +11,3 @@ spring:
           uri: lb://whales-user
           predicates:
             - Host=user.whalesocial.com
-
-        - id: baidu_route
-          uri: https://www.baidu.com
-          predicates:
-            - Host=**.baidu.com

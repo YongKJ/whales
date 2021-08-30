@@ -81,7 +81,7 @@ public class AuthLoginController {
 
     //进行登录
     @PostMapping("/authLogin/{loginWay}")
-    public GraceJSONResult authLogin(@PathVariable("loginWay") String loginWay, @RequestParam("phone") String phoneOrId, @RequestParam String passwordOrCode) {
+    public GraceJSONResult authLogin(@PathVariable("loginWay") String loginWay, @RequestParam("phoneOrId") String phoneOrId, @RequestParam String passwordOrCode) {
         //门户网账户密码登录:(IdAndPwd)
         //门户网手机密码登录:(PhoAndPwd)
         //门户网短信登陆:(PhoAndCode)
@@ -102,4 +102,8 @@ public class AuthLoginController {
         }
     }
 
+    @GetMapping("/hello")
+    public String hello(){
+        return "hello";
+    }
 }
