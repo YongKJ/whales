@@ -5,10 +5,13 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class UserVo {
+public class UserVo implements Serializable {
+
+    private String id;
     /**
      * 手机号码
      */

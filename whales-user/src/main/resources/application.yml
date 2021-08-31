@@ -17,10 +17,10 @@ spring:
       max-lifetime: 1800000           # 连接的生命时长（毫秒），超时而且没被使用则被释放（retired），默认:30分钟 1800000ms
       connection-test-query: SELECT 1
   redis:
-    host: 47.106.102.217
-    port: 2069
-    password: uetr9ce7d3jg8wm0qp76hsm2h43jn4v2xdsd
-
+    host: 119.23.57.189
+#    password: uetr9ce7d3jg8wm0qp76hsm2h43jn4v2xdsd
+  session:
+    store-type: redis
 
 mybatis:
   type-aliases-package: com.social.whales.user.entity

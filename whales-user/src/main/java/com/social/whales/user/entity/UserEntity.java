@@ -3,10 +3,11 @@ package com.social.whales.user.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "user")
-public class UserEntity {
+public class UserEntity implements Serializable {
     /**
      * 主键
      */

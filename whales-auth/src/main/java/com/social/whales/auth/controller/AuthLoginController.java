@@ -1,5 +1,7 @@
 package com.social.whales.auth.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.social.constant.AuthServerConstant;
 import com.social.grace.result.GraceJSONResult;
 import com.social.grace.result.ResponseStatusEnum;
@@ -13,6 +15,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -81,29 +84,40 @@ public class AuthLoginController {
 
     //进行登录
     @PostMapping("/authLogin/{loginWay}")
-    public GraceJSONResult authLogin(@PathVariable("loginWay") String loginWay, @RequestParam("phoneOrId") String phoneOrId, @RequestParam String passwordOrCode) {
+    public GraceJSONResult authLogin(@PathVariable("loginWay") String loginWay, @RequestParam("phoneOrId") String phoneOrId, @RequestParam String passwordOrCode, HttpSession session) {
         //门户网账户密码登录:(IdAndPwd)
         //门户网手机密码登录:(PhoAndPwd)
         //门户网短信登陆:(PhoAndCode)
-        if (loginWay.equals(LOGIN_IDANDPWD)||loginWay.equals(LOGIN_PHOANDPWD)) {
+        if (loginWay.equals(LOGIN_IDANDPWD) || loginWay.equals(LOGIN_PHOANDPWD)) {
             GraceJSONResult result = userFeignService.loginUser(loginWay, phoneOrId, passwordOrCode);
+            if (result.getStatus() == 200) {
+                String s = JSONObject.toJSONString(result.getData());
+                UserVo data = JSONObject.parseObject(s, UserVo.class);
+                session.setAttribute(AuthServerConstant.LONG_USER, data);
+                redisTemplate.delete(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneOrId);
+            }
             return result;
         } else if (loginWay.equals(LOGIN_PHOANDCODE)) {
             String redisWord = redisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneOrId);
             if (passwordOrCode.equals(redisWord.split("_")[0])) {
                 GraceJSONResult result = userFeignService.loginUser(loginWay, phoneOrId, passwordOrCode);
-                redisTemplate.delete(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneOrId);
+                if (result.getStatus() == 200) {
+                    String s = JSONObject.toJSONString(result.getData());
+                    UserVo data = JSONObject.parseObject(s, UserVo.class);
+                    session.setAttribute(AuthServerConstant.LONG_USER, data);
+                    redisTemplate.delete(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phoneOrId);
+                }
                 return result;
-            }else {
+            } else {
                 return GraceJSONResult.errorCustom(ResponseStatusEnum.SMS_CODE_EQUALS_ERROR);
             }
-        }else {
+        } else {
             return GraceJSONResult.error();
         }
     }
 
     @GetMapping("/hello")
-    public String hello(){
+    public String hello() {
         return "hello";
     }
 }
