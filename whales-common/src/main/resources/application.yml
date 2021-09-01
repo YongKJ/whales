@@ -1,2 +1,10 @@
 server:
   port: 9000
+
+min:
+  io:
+    endpoint: http://119.23.57.189:9090
+    accessKey: admin
+    secretKey: admin123456
+    min.io.bucket: whales-picture
+    min.io.path: /mydata/photos/

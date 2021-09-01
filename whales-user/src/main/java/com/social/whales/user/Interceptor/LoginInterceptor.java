@@ -35,6 +35,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }else {
             request.getSession().setAttribute("msg","请先进行登录");
+            //TODO 重定向
             return false;
         }
     }
