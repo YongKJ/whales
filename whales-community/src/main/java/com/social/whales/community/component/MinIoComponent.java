@@ -1,7 +1,5 @@
-package com.social.component;
+package com.social.whales.community.component;
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 
 import lombok.Data;
@@ -16,9 +14,9 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "min.io")
-public class MinIoComponent {
+public class MinIoComponent{
 
-    private String endpoint;
+    private String endpoint = "http://119.23.57.189:9090";
     private String accessKey;
     private String secretKey;
 

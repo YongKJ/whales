@@ -19,6 +19,9 @@
         <button id="disconnect" disabled="disabled" onclick="disconnect();">退出群聊</button>
     </div>
     <div id="conversationDiv">
+        <form>
+            <input type="file" id="filename" onclick="sendPhoto()" enctype="multipart/form-data">
+        </form>
         <label>输入你的名字</label><input type="text" id="name" />
         <button id="sendName" onclick="sendName();">发送</button>
         <p id="response"></p>
@@ -47,7 +50,7 @@
             stompClient.send("/group/status/1148973713/18819776464",{});
             // 通过 stompClient.subscribe 订阅 /member/13242366884 目标发送的信息，对应控制器的 SendTo 定义
             //stompClient.subscribe('/member/1148973713/13242366884', function(respnose)
-            stompClient.subscribe('/group/status/1148973713', function(respnose){
+            stompClient.subscribe('/member/photos/1148973713', function(respnose){
                 console.log("This is:"+respnose.body)
                 // 展示返回的信息，只要订阅了 /member/13242366884 目标，都可以接收到服务端返回的信息
                 showResponse(respnose.body);
@@ -58,6 +61,18 @@
                 showResponse(respnose.body);
             });
         });
+    }
+
+    function sendPhoto(){
+        var file = document.getElementById('filename')
+        // 连接 SockJs 的 endpoint 名称为 "/whaleSocial"
+        var socket = new SockJS('/whaleSocial');
+        // 使用 STOMP 子协议的 WebSocket 客户端
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame){
+            stompClient.send("/group/photos/1148973713",{},file);
+        });
+
     }
 
     function disconnect() {

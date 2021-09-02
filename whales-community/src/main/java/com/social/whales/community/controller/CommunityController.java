@@ -5,18 +5,35 @@ import com.social.grace.result.ResponseStatusEnum;
 import com.social.whales.community.entity.ChatLogTagEntity;
 import com.social.whales.community.exception.MessagesException;
 import com.social.whales.community.service.CommunitySendMessageService;
+import com.social.whales.community.utils.MinioUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import java.io.File;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 /*@RequestMapping("/")*/
 public class CommunityController {
+    private final static String MINIO_BUCKET = "whales-picture";
+
     @Autowired
     private CommunitySendMessageService sendMessageService;
+
+    @Resource
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+    @Autowired
+    MinioUtils minioUtils;
 
     @GetMapping("/community")
     public String communitySocketIndex() {
@@ -53,6 +70,30 @@ public class CommunityController {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.MESSAGE_SEND_ERROR);
         }
     }
+
+    @MessageMapping("/photos/{groupId}")
+    public void sendPhoto(@DestinationVariable String groupId,MultipartFile file){
+        SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");//设置日期格式
+        String name = file.getOriginalFilename();
+        String format = s.format(new Date());
+        String pathObject =  "/"+groupId+"_"+format+ "/"+name;
+        minioUtils.putObject(file,MINIO_BUCKET,pathObject);
+        String photosUrl = "http://119.23.57.189:9000/"+MINIO_BUCKET+pathObject;
+        simpMessagingTemplate.convertAndSend("/member/photos/"+groupId,photosUrl);
+    }
+
+    //@ResponseBody
+/*    @MessageMapping("/photos/{groupId}")
+    public void sendPhoto(@DestinationVariable String groupId,MultipartFile file){
+        SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");//设置日期格式
+        String name = file.getOriginalFilename();
+        String format = s.format(new Date());
+        String pathObject =  "/"+groupId+"_"+format+ "/"+name;
+        minioUtils.putObject(file,MINIO_BUCKET,pathObject);
+        String photosUrl = "http://119.23.57.189:9000/"+MINIO_BUCKET+pathObject;
+        simpMessagingTemplate.convertAndSend("/member/photos/"+groupId,photosUrl);
+    }*/
+
 /*    @SubscribeMapping("/status/{userId}")
     public void SubscribeTest2(@DestinationVariable("userId") String userId){
         System.out.println("userId:"+userId);

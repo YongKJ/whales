@@ -11,3 +11,8 @@ spring:
           uri: lb://whales-user
           predicates:
             - Host=user.whalesocial.com
+
+        - id: user_host_route
+          uri: lb://whales-community
+          predicates:
+            - Host=community.whalesocial.com
