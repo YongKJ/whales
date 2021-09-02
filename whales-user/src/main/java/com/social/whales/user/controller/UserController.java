@@ -1,10 +1,8 @@
 package com.social.whales.user.controller;
 
-import com.social.constant.AuthServerConstant;
 import com.social.grace.result.GraceJSONResult;
 import com.social.grace.result.ResponseStatusEnum;
 import com.social.vo.UserVo;
-import com.social.whales.user.entity.UserEntity;
 import com.social.whales.user.exception.PhoneExsitException;
 import com.social.whales.user.exception.UsernameExistException;
 import com.social.whales.user.service.UserService;

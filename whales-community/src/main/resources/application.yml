@@ -25,3 +25,10 @@ spring:
       connection-test-query: SELECT 1
 server:
   port: 11000
+
+
+minio:
+  endpoint: http://119.23.57.189:9000
+  accessKey: Q9EO9QJBE2PJOF0CZ6D2
+  secretKey: pfWOOp3mN0IQNN9KCNvX+HHmfZ8UGA03CcLHNCr2
+  bucketName: whales-picture

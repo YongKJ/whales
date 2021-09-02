@@ -29,4 +29,16 @@ public class MinioUtils {
                         .contentType(type)
                         .build());
     }
+
+    @SneakyThrows
+    public void putObject(File file, String bucket, String pathObject) {
+        InputStream stream = new FileInputStream(file);
+        String type = file.getName().split("\\.")[1];
+        System.out.println(type);
+        minioClient.putObject(
+                PutObjectArgs.builder().bucket(bucket).object(pathObject).stream(
+                        stream, file.length(), -1)
+                        .contentType(type)
+                        .build());
+    }
 }

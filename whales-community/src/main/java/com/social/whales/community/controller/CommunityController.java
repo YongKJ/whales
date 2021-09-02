@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -71,28 +71,27 @@ public class CommunityController {
         }
     }
 
-    @MessageMapping("/photos/{groupId}")
-    public void sendPhoto(@DestinationVariable String groupId,MultipartFile file){
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");//设置日期格式
-        String name = file.getOriginalFilename();
-        String format = s.format(new Date());
-        String pathObject =  "/"+groupId+"_"+format+ "/"+name;
-        minioUtils.putObject(file,MINIO_BUCKET,pathObject);
-        String photosUrl = "http://119.23.57.189:9000/"+MINIO_BUCKET+pathObject;
-        simpMessagingTemplate.convertAndSend("/member/photos/"+groupId,photosUrl);
-    }
-
-    //@ResponseBody
 /*    @MessageMapping("/photos/{groupId}")
-    public void sendPhoto(@DestinationVariable String groupId,MultipartFile file){
+    public void sendPhoto(@DestinationVariable String groupId, PhotoEntity photoEntity){
         SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");//设置日期格式
-        String name = file.getOriginalFilename();
+        File file = photoEntity.getFile();
         String format = s.format(new Date());
-        String pathObject =  "/"+groupId+"_"+format+ "/"+name;
+        String pathObject =  "/"+groupId+"_"+format+ "/"+file.getName();
         minioUtils.putObject(file,MINIO_BUCKET,pathObject);
         String photosUrl = "http://119.23.57.189:9000/"+MINIO_BUCKET+pathObject;
         simpMessagingTemplate.convertAndSend("/member/photos/"+groupId,photosUrl);
     }*/
+
+    @PostMapping("/photos/{groupId}")
+    public String sendPhoto(@PathVariable String groupId, MultipartFile file) throws UnsupportedEncodingException {
+        SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");//设置日期格式
+        String name = file.getOriginalFilename();
+        String format = s.format(new Date());
+        String pathObject =  "/"+groupId+"_"+format+ "/"+name;
+        minioUtils.putObject(file,MINIO_BUCKET,pathObject);
+        String photosUrl = "http://119.23.57.189:9000/"+MINIO_BUCKET+pathObject;
+        return "redirect:http://119.23.57.189:9000/"+MINIO_BUCKET+"/"+groupId+"_"+format+ "/"+URLEncoder.encode(name,"UTF-8");
+    }
 
 /*    @SubscribeMapping("/status/{userId}")
     public void SubscribeTest2(@DestinationVariable("userId") String userId){

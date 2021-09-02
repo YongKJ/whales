@@ -19,8 +19,9 @@
         <button id="disconnect" disabled="disabled" onclick="disconnect();">退出群聊</button>
     </div>
     <div id="conversationDiv">
-        <form>
-            <input type="file" id="filename" onclick="sendPhoto()" enctype="multipart/form-data">
+        <form action="/photos/1148973713" method="post" enctype="multipart/form-data">
+            <input type="file" id="file" name="file">
+            <input type="submit" value="提交" /><p>
         </form>
         <label>输入你的名字</label><input type="text" id="name" />
         <button id="sendName" onclick="sendName();">发送</button>
@@ -64,13 +65,14 @@
     }
 
     function sendPhoto(){
-        var file = document.getElementById('filename')
+        var file = document.getElementById('filename').files[0]
+        alert("This is:"+file)
         // 连接 SockJs 的 endpoint 名称为 "/whaleSocial"
         var socket = new SockJS('/whaleSocial');
         // 使用 STOMP 子协议的 WebSocket 客户端
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function(frame){
-            stompClient.send("/group/photos/1148973713",{},file);
+            stompClient.send("/group/photos/1148973713",{});
         });
 
     }
