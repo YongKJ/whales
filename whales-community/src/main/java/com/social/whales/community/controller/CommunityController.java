@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,25 +21,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 @Controller
 /*@RequestMapping("/")*/
 public class CommunityController {
-    private final static String MINIO_BUCKET = "whales-picture";
-
     @Autowired
     private CommunitySendMessageService sendMessageService;
-
-    @Resource
-    private SimpMessagingTemplate simpMessagingTemplate;
-
-    @Autowired
-    MinioUtils minioUtils;
-
-    @GetMapping("/community")
-    public String communitySocketIndex() {
-        return "helloTestIndex.html";
-    }
 
     /**
      * @param groupId
@@ -50,47 +39,31 @@ public class CommunityController {
     //群成员进入聊天室更改redis中记录
     //@SubscribeMapping("/status/{groupId}/{userId}")
     @MessageMapping("/status/{groupId}/{userId}")
-    public GraceJSONResult statusUser(@DestinationVariable("groupId")String groupId,@DestinationVariable("userId") String userId){
-        //System.out.println("groupId:"+groupId+"---------userId:"+userId);
-        try{
-            sendMessageService.statusUser(groupId,userId);
+    public GraceJSONResult statusUser(@DestinationVariable("groupId") String groupId, @DestinationVariable("userId") String userId) {
+        try {
+            sendMessageService.statusUser(groupId, userId);
             return GraceJSONResult.ok(ResponseStatusEnum.ENTER_GROUP_SUCCESS);
-        }catch (Exception e){
+        } catch (Exception e) {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.ENTER_GROUP_ERROR);
         }
     }
 
     //收发送信息：在前端发送按钮绑定“群号”，然后每次发送回自动传输到对应的群中
     @MessageMapping("/chat/{groupId}")
-    public GraceJSONResult sendMessage(@DestinationVariable("groupId")String groupId, ChatLogTagEntity chatLogTagEntity) {
+    public GraceJSONResult sendMessage(@DestinationVariable("groupId") String groupId, ChatLogTagEntity chatLogTagEntity) {
         try {
-            sendMessageService.sendMessageToGroup(groupId,chatLogTagEntity);
+            sendMessageService.sendMessageToGroup(groupId, chatLogTagEntity);
             return GraceJSONResult.ok();
-        }catch (MessagesException e){
+        } catch (MessagesException e) {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.MESSAGE_SEND_ERROR);
         }
     }
 
-/*    @MessageMapping("/photos/{groupId}")
-    public void sendPhoto(@DestinationVariable String groupId, PhotoEntity photoEntity){
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");//设置日期格式
-        File file = photoEntity.getFile();
-        String format = s.format(new Date());
-        String pathObject =  "/"+groupId+"_"+format+ "/"+file.getName();
-        minioUtils.putObject(file,MINIO_BUCKET,pathObject);
-        String photosUrl = "http://119.23.57.189:9000/"+MINIO_BUCKET+pathObject;
-        simpMessagingTemplate.convertAndSend("/member/photos/"+groupId,photosUrl);
-    }*/
-
-    @PostMapping("/photos/{groupId}")
-    public String sendPhoto(@PathVariable String groupId, MultipartFile file) throws UnsupportedEncodingException {
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");//设置日期格式
-        String name = file.getOriginalFilename();
-        String format = s.format(new Date());
-        String pathObject =  "/"+groupId+"_"+format+ "/"+name;
-        minioUtils.putObject(file,MINIO_BUCKET,pathObject);
-        String photosUrl = "http://119.23.57.189:9000/"+MINIO_BUCKET+pathObject;
-        return "redirect:http://119.23.57.189:9000/"+MINIO_BUCKET+"/"+groupId+"_"+format+ "/"+URLEncoder.encode(name,"UTF-8");
+    @ResponseBody
+    @PostMapping("/photos/{groupId}/{userId}")
+    public GraceJSONResult sendPhoto(@PathVariable String groupId, @PathVariable String userId, MultipartFile file) throws ExecutionException, InterruptedException{
+        sendMessageService.sendPhotoToGroup(groupId, userId, file);
+        return GraceJSONResult.ok();
     }
 
 /*    @SubscribeMapping("/status/{userId}")

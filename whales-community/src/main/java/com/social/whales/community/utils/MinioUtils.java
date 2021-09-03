@@ -22,7 +22,7 @@ public class MinioUtils {
     public void putObject(MultipartFile file, String bucket, String pathObject) {
         InputStream stream = file.getInputStream();
         String type = file.getContentType();
-        System.out.println(type);
+        //System.out.println(type);
         minioClient.putObject(
                 PutObjectArgs.builder().bucket(bucket).object(pathObject).stream(
                         stream, file.getSize(), -1)

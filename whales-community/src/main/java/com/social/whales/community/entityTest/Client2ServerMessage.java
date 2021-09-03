@@ -1,4 +1,4 @@
-package com.social.whales.community.entity;
+package com.social.whales.community.entityTest;
 
 public class Client2ServerMessage {
 

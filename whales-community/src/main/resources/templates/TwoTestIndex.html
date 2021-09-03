@@ -19,7 +19,7 @@
         <button id="disconnect" disabled="disabled" onclick="disconnect();">退出群聊</button>
     </div>
     <div id="conversationDiv">
-        <form action="/photos/1148973713/18819776464" method="post" enctype="multipart/form-data" target="rfFrame">
+        <form action="/photos/1148973713/13242366884" method="post" enctype="multipart/form-data" target="rfFrame">
             <input type="file" id="file" name="file">
             <input type="submit" value="提交" /><p>
         </form>
@@ -49,8 +49,8 @@
             setConnected(true);
             console.log('Connected: ' + frame);
             //发送消息
-            //stompClient.send("/group/status/15363872945/13242366884",{});
-            stompClient.send("/group/status/1148973713/18819776464",{});
+            stompClient.send("/group/status/1148973713/13242366884",{});
+            //stompClient.send("/group/status/1148973713/18819776464",{});
             // 通过 stompClient.subscribe 订阅 /member/13242366884 目标发送的信息，对应控制器的 SendTo 定义
             //stompClient.subscribe('/member/1148973713/13242366884', function(respnose)
             stompClient.subscribe('/member/photos/1148973713', function(respnose){

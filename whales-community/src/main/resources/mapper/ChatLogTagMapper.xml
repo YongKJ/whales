@@ -10,5 +10,6 @@
     <result column="user_information_time" property="userInformationTime" jdbcType="TIMESTAMP" />
     <result column="information_sign" property="informationSign" jdbcType="VARCHAR" />
     <result column="user_information" property="userInformation" jdbcType="LONGVARCHAR" />
+    <result column="information_type" property="informationType" javaType="VARCHAR"/>
   </resultMap>
 </mapper>
