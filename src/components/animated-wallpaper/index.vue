@@ -18,7 +18,7 @@
 <!--                :clickMode="mode"-->
 <!--        >-->
 <!--        </vue-particles>-->
-        <div id="particles-js"></div>
+<!--        <div id="particles-js"></div>-->
         <slot></slot>
     </div>
 </template>
