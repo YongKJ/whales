@@ -1,30 +1,29 @@
 <template>
     <div :style="style">
-        <vue-particles
-                color="#ffffff"
-                :particleOpacity="0.7"
-                :particlesNumber="number"
-                shapeType="circle"
-                :particleSize="3"
-                linesColor="#E6E6FA"
-                :linesWidth="1"
-                :lineLinked="linked"
-                :lineOpacity="0.6"
-                :linesDistance="150"
-                :moveSpeed="speed"
-                :hoverEffect="true"
-                hoverMode="grab"
-                :clickEffect="true"
-                :clickMode="mode"
-        >
-        </vue-particles>
+<!--        <vue-particles-->
+<!--                color="#ffffff"-->
+<!--                :particleOpacity="0.7"-->
+<!--                :particlesNumber="number"-->
+<!--                shapeType="circle"-->
+<!--                :particleSize="3"-->
+<!--                linesColor="#E6E6FA"-->
+<!--                :linesWidth="1"-->
+<!--                :lineLinked="linked"-->
+<!--                :lineOpacity="0.6"-->
+<!--                :linesDistance="150"-->
+<!--                :moveSpeed="speed"-->
+<!--                :hoverEffect="true"-->
+<!--                hoverMode="grab"-->
+<!--                :clickEffect="true"-->
+<!--                :clickMode="mode"-->
+<!--        >-->
+<!--        </vue-particles>-->
+        <div id="particles-js"></div>
         <slot></slot>
     </div>
 </template>
 
 <script>
-    import VueParticles from 'vue-particles'
-
     export default {
         name: "AnimatedWallpaper",
         props: {
