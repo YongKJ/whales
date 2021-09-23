@@ -25,6 +25,8 @@ export const antd = {
         // 菜单
         Vue.component(Menu.name, Menu);
         Vue.component(Menu.Item.name, Menu.Item);
+        Vue.component(Menu.SubMenu.name, Menu.SubMenu);
+        Vue.component(Menu.ItemGroup.name, Menu.ItemGroup);
         Vue.component(Dropdown.name, Dropdown); // 下拉菜单
         // 表单
         Vue.component(Form.name, Form);
