@@ -1,5 +1,14 @@
 <template>
     <a-menu v-model:selectedKeys="current" mode="horizontal">
+
+        <a-menu-item key="logo">
+            <a-avatar :src=logoImg />
+            <a-button type="text" class="logo-button">
+                <div class="logo-text-english">WhaleHub</div>
+                <div class="logo-text-chinese">每个孤独的人，都值得被拥抱</div>
+            </a-button>
+        </a-menu-item>
+
         <a-menu-item key="mail">
             <template #icon>
                 <mail-outlined />
@@ -40,14 +49,18 @@
 
 <script>
     import { defineComponent, ref } from 'vue';
+    import {Image} from "@/common/entity/Image";
     import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue';
 
     export default defineComponent({
         name: 'NavigationBar',
         setup() {
             const current = ref(['mail']);
+            const logoImg = Image.LOGO;
             return {
                 current,
+                logoImg,
+                size: ref(8)
             };
         },
         components: {
@@ -59,5 +72,23 @@
 </script>
 
 <style scoped>
-
+.logo-button {
+    position: relative;
+    padding-right: 0px;
+}
+.logo-text-english {
+    font-size: 8px;
+    font-weight:bold;
+    font-family: "Times New Roman";
+    position: absolute;
+    right: 100px;
+    bottom: 16px;
+}
+.logo-text-chinese {
+    font-size: 4px;
+    font-family: SimSun, STSong;
+    position: relative;
+    top: 5px;
+    right: 11px;
+}
 </style>

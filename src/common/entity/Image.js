@@ -1,6 +1,11 @@
 
 export class Image {
 
+    // LOGO 图片
+    static get LOGO() {
+        return require("@/assets/material/274d6610-13cd-11ec-9cfb-914b608a93f5.png");
+    }
+
     // 用户登录
     static get LGOIN() {
         return require("@/assets/img/nap.jpg");
